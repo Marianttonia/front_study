@@ -1,79 +1,84 @@
-var grid = []
-var precedence = ["(","[","{"]
-var operators = ["x","/"]
-var operacao = ""
-var firstNumber, operator, finalNumber, resultRegex, openParenteses, closeParenteses, contentParenteses, lengthPatenteses, newRegex
-
-function handleCharacter(character) {
-  if (character.id === 'cleanDigit'){
-    grid = grid.slice(0, -1)
-  } else if (character.id === 'cleanAll') {
-    grid = ''
-  } else {
-    grid += character.id
-  }
-  gridhtml.innerHTML = grid
-  const regex = /(\d+)|(\w)|(%)|(\+)|(-)|[/(\d+\.\d+)/)|(\w)|(%)|(\+)|(-)(\d+)/)/]/g
-  resultRegex = grid.match(regex)
+function appendToDisplay(value) {
+  const display = document.getElementById('display');
+  display.value += value;
 }
 
-function verificationData() {
-  if (grid == '') {
-    alert("Digite a operacao desejada");
+function clearDisplay() {
+  const display = document.getElementById('display');
+  display.value = display.value.slice(0, -1);
+}
+
+function clearAll() {
+  const display = document.getElementById('display');
+  display.value = '';
+}
+
+function calculateResult() {
+  const display = document.getElementById('display').value;
+  try {
+    const resultado = calculateExpression(display);
+    document.getElementById('display').value = resultado;
+  } catch (error) {
+    document.getElementById('display').value = 'Erro';
+    console.error(error);
   }
 }
 
-function findIndex(arr) {
-  const indexes = []
-  for (let i in arr) {
-    console.log(arr[i])
-    if (arr[i] === 'x' || arr[i] === '/') {
-      indexes.push(i)
+function calculateExpression(expression) {
+  try {
+    // Remover espaços em branco da expressão
+    expression = expression.replace(/\s/g, '');
+
+    // Lidar com parênteses primeiro
+    while (expression.includes('(')) {
+      const abertura = expression.lastIndexOf('(');
+      const fechamento = expression.indexOf(')', abertura);
+      if (abertura === -1 || fechamento === -1) {
+        throw new Error('Parênteses desbalanceados');
+      }
+
+      const trechoComParenteses = expression.slice(abertura + 1, fechamento);
+      const resultadoParenteses = calculateExpression(trechoComParenteses);
+
+      expression = expression.substring(0, abertura) + resultadoParenteses + expression.substring(fechamento + 1);
     }
-  }
-  return indexes
-}
 
-operators.map(el, positions => { 
-  var positions = findIndex(resultRegex)
-  if (positions.length !== 0) {
-    positions.forEach(position => {
-      var beforePosition = position - 1
-      var afterPosition = position + 1
-      console.log("positions by map" ,beforePosition, position, afterPosition)
-      calculator(beforePosition, position, afterPosition)
-    })
-  } else {
-    position = resultRegex[1];
-    beforePosition = resultRegex[0];
-    afterPosition = resultRegex[2];
-    console.log(resultRegex,firstNumber,operator,finalNumber);      
-    result = calculator(firstNumber, operator, finalNumber)
-}})
+    // Realizar multiplicação e divisão
+    while (expression.includes('*') || expression.includes('/')) {
+      const multiplicacao = expression.indexOf('*');
+      const divisao = expression.indexOf('/');
+      const operador = multiplicacao !== -1 ? '*' : '/';
 
-function calculator(beforePosition, position, afterPosition){
-  firstNumber = Number(grid.find((e, i) => i === beforePosition))
-  operator = grid.find((element, index) => index === position)
-  finalNumber = Number(grid.find((element, index) => index === afterPosition))
-  console.log("pars calc" ,firstNumber, operator, finalNumber)
-  if (operator === "/") {
-    result = firstNumber / finalNumber
-  }
-  if (operator === "x") {
-    result = firstNumber * finalNumber;
-  }
-  if (operator === "+") { 
-    result = firstNumber + finalNumber
-  }
-  if (operator === "-") {
-    result = firstNumber - finalNumber
-  }
-  grid.splice(beforePosition, 3, result)
-  return result
-}
+      if (divisao !== -1 && (multiplicacao === -1 || divisao < multiplicacao)) {
+        const partes = expression.split('/');
+        const resultado = parseFloat(partes[0]) / parseFloat(partes[1]);
+        expression = expression.replace(partes.join('/'), resultado);
+      } else {
+        const partes = expression.split('*');
+        const resultado = parseFloat(partes[0]) * parseFloat(partes[1]);
+        expression = expression.replace(partes.join('*'), resultado);
+      }
+    }
 
-function responseCalculator() {
-  grid = result
-  console.log(result)
-  gridhtml.innerHTML = result
+    // Realizar soma e subtração
+    while (expression.includes('+') || expression.includes('-')) {
+      const adicao = expression.indexOf('+');
+      const subtracao = expression.indexOf('-');
+      const operador = adicao !== -1 ? '+' : '-';
+
+      if (subtracao !== -1 && (adicao === -1 || subtracao < adicao)) {
+        const partes = expression.split('-');
+        const resultado = parseFloat(partes[0]) - parseFloat(partes[1]);
+        expression = expression.replace(partes.join('-'), resultado);
+      } else {
+        const partes = expression.split('+');
+        const resultado = parseFloat(partes[0]) + parseFloat(partes[1]);
+        expression = expression.replace(partes.join('+'), resultado);
+      }
+    }
+
+    return parseFloat(expression);
+  } catch (error) {
+    throw new Error('Expressão inválida');
+  }
 }

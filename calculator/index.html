@@ -3,42 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link type="text/css" rel="stylesheet" href="./main.css"/>
+  <link rel="stylesheet" type="text/css" href="./main.css"/>
   <script src="./main.js" defer></script>
-  <title> Calculator </title>
+  <title>Calculator</title>
 </head>
 <body>
-  <header> 
-    <h3 id="title"> Simple Calculator </h3>
+  <header>
+    <h3 id="title">Simple Calculator</h3>
   </header>
   <main>
-    <div class="insidecal">
-    <div id="gridhtml"></div>
-    <section id="numbers" class="numbers"> 
-      <button id="." class="display" onclick="handleCharacter(this)"> . </button>
-      <button id="0" class="display" onclick="handleCharacter(this)"> 0 </button>
-      <button id="1" class="display" onclick="handleCharacter(this)"> 1 </button>
-      <button id="2" class="display" onclick="handleCharacter(this)"> 2 </button>
-      <button id="3" class="display" onclick="handleCharacter(this)"> 3 </button>
-      <button id="4" class="display" onclick="handleCharacter(this)"> 4 </button>
-      <button id="5" class="display" onclick="handleCharacter(this)"> 5 </button>
-      <button id="6" class="display" onclick="handleCharacter(this)"> 6 </button>
-      <button id="7" class="display" onclick="handleCharacter(this)"> 7 </button>
-      <button id="8" class="display" onclick="handleCharacter(this)"> 8 </button>
-      <button id="9" class="display" onclick="handleCharacter(this)"> 9 </button>
-    </section>
-    <section id="operators" class="operators"> 
-      <button id="(" class="display" onclick="handleCharacter(this)"> ( </button>
-      <button id=")" class="display" onclick="handleCharacter(this)"> ) </button>  
-      <button id="x" class="display" onclick="handleCharacter(this)"> x </button>
-      <button id="/" class="display" onclick="handleCharacter(this)"> / </button>
-      <button id="+" class="display" onclick="handleCharacter(this)"> + </button>
-      <button id="-" class="display" onclick="handleCharacter(this)"> - </button>
-      <button id="cleanDigit" class="display" onclick="handleCharacter(this)"> C </button>
-      <button id="cleanAll" class="display" onclick="handleCharacter(this)"> MC </button>
-      <button id="result" onclick="responseCalculator()" > = </button>
+    <div class="calculator">
+      <input id="display" type="text" readonly aria-label="Calculator Display">
+      <div class="buttons">
+        <button type="button" onclick="appendToDisplay('1')">1</button>
+        <button type="button" onclick="appendToDisplay('2')">2</button>
+        <button type="button" onclick="appendToDisplay('3')">3</button>
+        <button type="button" onclick="appendToDisplay('4')">4</button>
+        <button type="button" onclick="appendToDisplay('5')">5</button>
+        <button type="button" onclick="appendToDisplay('6')">6</button>
+        <button type="button" onclick="appendToDisplay('7')">7</button>
+        <button type="button" onclick="appendToDisplay('8')">8</button>
+        <button type="button" onclick="appendToDisplay('9')">9</button>
+        <button type="button" onclick="appendToDisplay('0')">0</button>
+        <button type="button" onclick="appendToDisplay('.')">.</button>
+        <button type="button" onclick="clearDisplay()">C</button>
+        <button type="button" onclick="clearAll()">AC</button>
+        <button type="button" onclick="appendToDisplay('(')">(</button>
+        <button type="button" onclick="appendToDisplay(')')">)</button>
+        <button type="button" onclick="appendToDisplay('+')">+</button>
+        <button type="button" onclick="appendToDisplay('-')">-</button>
+        <button type="button" onclick="appendToDisplay('')"></button>
+        <button type="button" onclick="appendToDisplay('/')">/</button>
+        <button type="button" onclick="calculateResult()">=</button>
+      </div>
     </div>
-    </main> 
+  </main>
 </body>
 </html>
