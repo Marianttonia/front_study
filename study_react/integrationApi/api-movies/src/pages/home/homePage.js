@@ -9,12 +9,7 @@ const HomePage = () => {
   const [genres, setGenres] = useState([]);
   const [genreMovies, setGenresMovies] = useState([]);
   const img_path = 'https://image.tmdb.org/t/p/w500';
-
-  useEffect(() => {
-    populatePopularMovies();
-    populateGenres();
-  }, []);
-
+  
   const populatePopularMovies = async () => {
     try {
       const movies = await getPopularMovies();
@@ -39,6 +34,12 @@ const HomePage = () => {
       console.log('Erro ao buscar lista de gêneros: ', e);
     }
   };
+  
+  useEffect(() => {
+    populatePopularMovies();
+    populateGenres();
+  }, []);
+
 
   return (
     <div className='home'>

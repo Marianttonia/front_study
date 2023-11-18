@@ -2,7 +2,9 @@
 import React, {useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import { getMovieDetails } from '../../services/api';
-import Details from '../../components/movieDetails/details';
+import Header from '../../components/header/header';
+import Details from '../../components/details/details';
+import Footer from '../../components/footer/footer';
 
 const MoviePage = () => {
   const { id } = useParams();
@@ -25,7 +27,11 @@ const MoviePage = () => {
   }
 
   return (
-    <Details movieDetails={movieDetails} img_path={img_path} ></Details>
+    <div>
+      <Header />
+      <Details  movieDetails={movieDetails} img_path={img_path} ></Details>
+      <Footer />
+    </div>
   );
 };
 
